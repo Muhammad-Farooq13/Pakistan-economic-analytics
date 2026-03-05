@@ -6,15 +6,9 @@ Run:
     pytest tests/ -v --cov=src
 """
 
-import sys
-from pathlib import Path
-
 import numpy as np
 import pandas as pd
 import pytest
-
-ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT))
 
 from src.data.load_data import load_raw, basic_info
 from src.data.preprocess import (

@@ -3,15 +3,9 @@
 Unit tests for the feature engineering pipeline.
 """
 
-import sys
-from pathlib import Path
-
 import numpy as np
 import pandas as pd
 import pytest
-
-ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT))
 
 from src.features.build_features import (
     add_lag_features, add_rolling_features, add_pkr_depreciation,
