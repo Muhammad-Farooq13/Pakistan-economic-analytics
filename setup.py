@@ -8,7 +8,7 @@ setup(
     description="GDP Growth Forecasting & Economic Dashboard for Pakistan (2000-2025)",
     author="Muhammad Farooq",
     author_email="mfarooqshafee333@gmail.com",
-    url="https://github.com/Muhammad-Farooq-13/pakistan-economic-analytics",
+    url="https://github.com/Muhammad-Farooq13/Pakistan-economic-analytics",
     packages=find_packages(where="."),
     package_dir={"": "."},
     python_requires=">=3.11",

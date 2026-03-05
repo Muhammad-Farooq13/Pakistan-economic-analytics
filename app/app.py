@@ -503,5 +503,5 @@ elif page == "ℹ️ About":
 
     **Author** — Muhammad Farooq  
     Email: [mfarooqshafee333@gmail.com](mailto:mfarooqshafee333@gmail.com)  
-    GitHub: [github.com/Muhammad-Farooq-13](https://github.com/Muhammad-Farooq-13/pakistan-economic-analytics)
+    GitHub: [github.com/Muhammad-Farooq13](https://github.com/Muhammad-Farooq13/Pakistan-economic-analytics)
     """)

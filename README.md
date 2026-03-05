@@ -1,7 +1,7 @@
 # 🇵🇰 Pakistan Economic Analytics
 ### GDP Growth Forecasting & Macroeconomic Health Dashboard (2000–2025)
 
-[![CI](https://github.com/Muhammad-Farooq-13/pakistan-economic-analytics/actions/workflows/ci.yml/badge.svg)](https://github.com/Muhammad-Farooq-13/pakistan-economic-analytics/actions)
+[![CI](https://github.com/Muhammad-Farooq13/Pakistan-economic-analytics/actions/workflows/ci.yml/badge.svg)](https://github.com/Muhammad-Farooq13/Pakistan-economic-analytics/actions)
 [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
@@ -96,7 +96,7 @@ pakistan-economic-analytics/
 
 ### 1. Clone and install
 ```bash
-git clone https://github.com/Muhammad-Farooq-13/pakistan-economic-analytics.git
+git clone https://github.com/Muhammad-Farooq13/Pakistan-economic-analytics.git
 cd pakistan-economic-analytics
 pip install -r requirements.txt
 pip install -e .
