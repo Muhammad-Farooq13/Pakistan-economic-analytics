@@ -6,7 +6,6 @@ Unit tests for the feature engineering pipeline.
 import numpy as np
 import pandas as pd
 import pytest
-
 from src.features.build_features import (
     add_lag_features, add_rolling_features, add_pkr_depreciation,
     add_forex_cover, add_trade_openness, add_external_pressure_index,
@@ -20,15 +19,15 @@ def base_df():
     np.random.seed(0)
     n = 15
     return pd.DataFrame({
-        "gdp_growth_pct":       np.random.uniform(1, 8, n),
-        "gdp_usd_bn":           np.linspace(100, 400, n),
-        "inflation_cpi_pct":    np.random.uniform(3, 25, n),
-        "pkr_per_usd":          np.linspace(60, 280, n),
+        "gdp_growth_pct": np.random.uniform(1, 8, n),
+        "gdp_usd_bn": np.linspace(100, 400, n),
+        "inflation_cpi_pct": np.random.uniform(3, 25, n),
+        "pkr_per_usd": np.linspace(60, 280, n),
         "forex_reserves_usd_bn": np.random.uniform(5, 25, n),
-        "exports_usd_bn":       np.random.uniform(10, 35, n),
-        "imports_usd_bn":       np.random.uniform(15, 55, n),
-        "remittances_usd_bn":   np.linspace(1, 35, n),
-        "fdi_inflows_usd_bn":   np.random.uniform(0.3, 5, n),
+        "exports_usd_bn": np.random.uniform(10, 35, n),
+        "imports_usd_bn": np.random.uniform(15, 55, n),
+        "remittances_usd_bn": np.linspace(1, 35, n),
+        "fdi_inflows_usd_bn": np.random.uniform(0.3, 5, n),
         "trade_balance_usd_bn": np.random.uniform(-30, -5, n),
     }, index=range(2000, 2000 + n))
 

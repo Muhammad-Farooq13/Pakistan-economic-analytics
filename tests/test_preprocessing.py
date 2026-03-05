@@ -9,7 +9,6 @@ Run:
 import numpy as np
 import pandas as pd
 import pytest
-
 from src.data.load_data import load_raw, basic_info
 from src.data.preprocess import (
     cap_outliers, impute_missing, temporal_split
@@ -31,10 +30,10 @@ def sample_df():
     np.random.seed(42)
     n = 20
     return pd.DataFrame({
-        "year":            range(2000, 2000 + n),
-        "gdp_growth_pct":  np.random.normal(4, 2, n),
+        "year": range(2000, 2000 + n),
+        "gdp_growth_pct": np.random.normal(4, 2, n),
         "inflation_cpi_pct": np.random.uniform(3, 20, n),
-        "pkr_per_usd":     np.linspace(55, 280, n),
+        "pkr_per_usd": np.linspace(55, 280, n),
     }).set_index("year")
 
 
