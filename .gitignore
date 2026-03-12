@@ -23,6 +23,13 @@ ENV/
 # Model artifacts (large binaries – use DVC instead)
 models/saved/*.pkl
 models/saved/*.joblib
+# Exception: version pre-trained demo artifacts for Streamlit Cloud
+!models/saved/best_model.pkl
+!models/saved/feature_names.json
+!models/saved/experiment_manifest.json
+!models/saved/pakistan_demo.pkl
+!models/saved/pakistan_demo_features.json
+!models/saved/.gitkeep
 
 # Data — small CSVs are tracked for reproducibility
 # Only exclude large/sensitive data files

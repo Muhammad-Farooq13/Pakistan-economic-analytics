@@ -1,0 +1,17 @@
+[
+  "inflation_cpi_pct",
+  "policy_rate_pct",
+  "pkr_per_usd",
+  "public_debt_gdp_pct",
+  "tax_revenue_gdp_pct",
+  "remittances_usd_bn",
+  "exports_usd_bn",
+  "imports_usd_bn",
+  "forex_reserves_usd_bn",
+  "fdi_inflows_usd_bn",
+  "population_mn",
+  "imf_program_active",
+  "forex_months_import",
+  "trade_openness",
+  "pkr_yoy_change"
+]

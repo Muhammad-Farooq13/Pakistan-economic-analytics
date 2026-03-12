@@ -1,195 +1,119 @@
-# 🇵🇰 Pakistan Economic Analytics
-### GDP Growth Forecasting & Macroeconomic Health Dashboard (2000–2025)
+# Pakistan Economic Analytics
 
-[![CI](https://github.com/Muhammad-Farooq13/Pakistan-economic-analytics/actions/workflows/ci.yml/badge.svg)](https://github.com/Muhammad-Farooq13/Pakistan-economic-analytics/actions)
-[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![CI](https://github.com/Muhammad-Farooq13/Pakistan-economic-analytics/actions/workflows/ci.yml/badge.svg)](https://github.com/Muhammad-Farooq13/Pakistan-economic-analytics/actions/workflows/ci.yml)
+[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://python.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
----
-
-## 📋 Problem Statement
-
-Pakistan's macroeconomic trajectory is shaped by a complex interplay of fiscal policy, monetary conditions, external shocks, and structural factors. This project delivers:
-
-1. **A reproducible ML pipeline** that forecasts annual GDP growth rate from 30+ macro indicators
-2. **An interactive dashboard** for real-time economic scenario simulation
-3. **A fully documented codebase** that serves as a reference for end-to-end data science projects
-
-**Success Criteria:** Test RMSE < 1.5% on held-out years for GDP growth prediction.
+> **End-to-end GDP growth forecasting system** — 26 years of Pakistan macroeconomic data (2000–2025), 35 engineered features, temporal cross-validation, and an interactive Streamlit dashboard.
 
 ---
 
-## 🏗️ Project Architecture
+## Live Dashboard
+
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://pakistan-economic-analytics.streamlit.app)
+
+**6 pages:**
+| Page | Content |
+|------|---------|
+| 📊 Overview | KPI cards (GDP, inflation, FX, PKR/USD), GDP timeline, external sector sparklines |
+| 📈 Trends | Multi-indicator z-score comparison, IMF programme markers, external sector chart |
+| 🔍 Correlations | Scatter + Pearson/Spearman statistics, full correlation heatmap |
+| 🤖 GDP Forecast | ML back-test: actual vs predicted (2002–2025), test period highlighted |
+| 🎯 Scenario Analysis | 2026 GDP growth simulator — adjust 6 macro levers, see gauge + interpretation |
+| ℹ️ About | Technical stack, project structure, quick-start |
+
+---
+
+## Dataset
+
+**`data/raw/pakistan_economic_indicators_2000_2025.csv`** — 26 annual observations × 30+ columns
+
+| Category | Indicators |
+|----------|-----------|
+| Output | GDP (USD bn), GDP growth (%), GDP per capita |
+| Monetary | Inflation CPI, policy rate, PKR/USD |
+| Fiscal | Public debt (% GDP), tax revenue (% GDP) |
+| External | Exports, imports, remittances, forex reserves, FDI, current account |
+| Structural | Population, literacy rate, sector shares (agri/services/industry), mobile penetration |
+| Categorical | IMF programme active, GDP growth category, inflation category, key events |
+
+**Feature engineering adds 11 derived features:** GDP/inflation lags, 3-year moving averages, PKR YoY depreciation, forex import cover (months), trade openness, external pressure index, remittances/FDI growth rates.
+
+---
+
+## Model Results
+
+Training uses **TimeSeriesSplit** to prevent look-ahead bias (2002–2020 train, 2021–2025 test).
+
+| Model | CV RMSE | Test RMSE | Test R² |
+|-------|---------|-----------|---------|
+| **RandomForest** ✅ | 1.697% | 2.178% | 0.073 |
+| ElasticNet | 2.431% | — | — |
+| GradientBoosting | 2.516% | — | — |
+| Ridge | 2.522% | — | — |
+
+*Note: The 2021–2025 test period spans post-COVID recovery (→ +6.1%), then a sharp reversal (−0.04% in 2023), making test R² highly sensitive to the 5 test years. CV RMSE is the more meaningful comparison metric.*
+
+---
+
+## Project Structure
 
 ```
-pakistan-economic-analytics/
-│
-├── 📂 data/
-│   ├── raw/                    ← Original CSV (2000–2025, 26×32)
-│   └── processed/              ← Feature-engineered dataset
-│
-├── 📂 src/                     ← Importable library (pip install -e .)
+pakeco/
+├── data/
+│   ├── raw/                       # Original CSV (26 rows × 30+ cols)
+│   └── processed/                 # Engineered features (git-ignored)
+├── src/
 │   ├── data/
-│   │   ├── load_data.py        ← Loading + type coercions
-│   │   └── preprocess.py       ← Outlier capping, imputation, scaling, splitting
-│   ├── features/
-│   │   └── build_features.py   ← 11 domain-driven engineered features
+│   │   ├── load_data.py           # CSV loader + type coercions
+│   │   └── preprocess.py          # Outlier capping, imputation, temporal split
+│   ├── features/build_features.py # 35-feature engineering pipeline
 │   ├── models/
-│   │   ├── train.py            ← CV, GridSearchCV, TimeSeriesSplit
-│   │   ├── evaluate.py         ← MAE, RMSE, MAPE, R², feature importance
-│   │   └── predict.py          ← Inference + scenario forecasting
-│   └── visualization/
-│       └── plots.py            ← Publication-quality Matplotlib/Seaborn charts
-│
-├── 📂 notebooks/
-│   └── 01_EDA.ipynb            ← Full end-to-end analysis (9 sections)
-│
-├── 📂 app/
-│   └── app.py                  ← Streamlit dashboard (5 pages)
-│
-├── 📂 models/saved/            ← Persisted model + feature manifest
-├── 📂 reports/figures/         ← Auto-generated charts
-├── 📂 tests/                   ← Unit tests (pytest + coverage)
-├── 📂 .github/workflows/       ← CI/CD pipeline (GitHub Actions)
-│
-├── config.py                   ← Single source of truth for paths & constants
-├── requirements.txt
-├── setup.py
-└── Makefile
+│   │   ├── train.py               # 5-model catalogue, TimeSeriesSplit CV, GridSearch
+│   │   ├── predict.py             # Artefact loader + inference
+│   │   └── evaluate.py            # Regression metrics report
+│   └── visualization/plots.py
+├── models/saved/
+│   ├── best_model.pkl             # Versioned RandomForest pipeline (~88 KB)
+│   ├── feature_names.json         # 35 feature names
+│   └── experiment_manifest.json   # Training run metadata
+├── scripts/train_pipeline.py      # Full training script (with GridSearch tuning)
+├── train_demo.py                  # Lightweight Ridge demo model trainer
+├── streamlit_app.py               # Interactive 6-page dashboard
+├── app/app.py                     # Original Streamlit app
+├── notebooks/01_EDA.ipynb         # End-to-end analysis notebook
+├── tests/                         # 35 unit tests (pytest)
+├── config.py                      # Central path & constant registry
+├── requirements.txt               # Full deps (includes streamlit, plotly)
+├── requirements-ci.txt            # Minimal CI deps
+├── runtime.txt                    # python-3.11 (Streamlit Cloud)
+└── pyproject.toml
 ```
 
 ---
 
-## 📊 Dataset Overview
+## Quick Start
 
-| Property | Detail |
-|---|---|
-| Source | Compiled from World Bank, IMF, SBP, PBS |
-| Period | 2000–2025 (26 annual observations) |
-| Features | 32 raw + 11 engineered = **43 total** |
-| Target | `gdp_growth_pct` (regression) |
-
-**Feature Groups:**
-- **Macro:** Inflation, unemployment, policy rate, PKR/USD, public debt
-- **External:** Remittances, exports, imports, trade balance, FX reserves, FDI
-- **Structural:** Population, literacy, sectoral shares (agri/services/industry)
-- **Engineered:** Lag features, rolling means, PKR depreciation, FX import cover, trade openness, external pressure index
-
----
-
-## 🤖 Modeling Approach
-
-| Step | Method |
-|---|---|
-| **Validation** | `TimeSeriesSplit` (k=5) — no look-ahead leakage |
-| **Baseline models** | Ridge, Lasso, ElasticNet |
-| **Advanced models** | RandomForest, GradientBoosting |
-| **Tuning** | `GridSearchCV` on temporal CV folds |
-| **Metrics** | MAE, RMSE, MAPE, R² |
-| **Explainability** | Feature importance, permutation importance, SHAP |
-| **Serialization** | `joblib` + JSON manifest with MD5 checksum |
-
----
-
-## 🚀 Quickstart
-
-### 1. Clone and install
 ```bash
-git clone https://github.com/Muhammad-Farooq13/Pakistan-economic-analytics.git
-cd pakistan-economic-analytics
+# 1. Clone
+git clone https://github.com/Muhammad-Farooq13/Pakistan-economic-analytics
+cd Pakistan-economic-analytics
+
+# 2. Install
 pip install -r requirements.txt
-pip install -e .
-```
 
-### 2. Run the analysis notebook
-```bash
-jupyter lab notebooks/01_EDA.ipynb
-# Run all cells — this trains and saves the model
-```
+# 3. Launch dashboard (demo model already bundled)
+streamlit run streamlit_app.py
 
-### 3. Launch the dashboard
-```bash
-streamlit run app/app.py
-```
+# 4. Retrain the full model (optional — GridSearch, ~15s)
+python scripts/train_pipeline.py
 
-### 4. Run tests
-```bash
+# 5. Run tests
 pytest tests/ -v --cov=src
 ```
 
 ---
 
-## 📈 Key Results
+## License
 
-| Model | Test RMSE | Test MAE | Test R² |
-|---|---|---|---|
-| Ridge (baseline) | ~1.8% | ~1.4% | ~0.65 |
-| GradientBoosting | ~1.3% | ~1.0% | ~0.78 |
-| **RandomForest (tuned)** | **~1.2%** | **~0.9%** | **~0.82** |
-
-*Test set = last 5 years (2021–2025). Trained on 2002–2020.*
-
----
-
-## 🎯 Scenario Analysis
-
-The dashboard includes a **live policy scenario simulator** covering:
-- Monetary shocks (inflation, policy rate)
-- Currency depreciation (PKR/USD)
-- External sector (remittances, FX reserves)
-- Fiscal stress (public debt)
-
-Each scenario produces a GDP growth point-estimate with a gauge visualization.
-
----
-
-## 🛠️ Development
-
-```bash
-make lint      # flake8 + isort check
-make format    # black + isort formatting
-make test      # pytest with coverage report
-make clean     # remove __pycache__, .coverage
-```
-
----
-
-## 📁 Reproducibility
-
-Each training run saves:
-- `models/saved/best_model.pkl` — trained pipeline
-- `models/saved/feature_names.json` — exact feature list
-- `models/saved/experiment_manifest.json` — metrics, params, MD5 hash
-
----
-
-## 🎓 Skills Demonstrated
-
-> This project is designed to signal the following competencies to employers:
-
-| Skill Domain | Evidence |
-|---|---|
-| **Data Engineering** | Modular pipeline, versioned ingestion, outlier handling |
-| **Feature Engineering** | 11 domain-driven features with economic rationale |
-| **ML Modeling** | 5 models, GridSearchCV, TimeSeriesSplit |
-| **Statistical Analysis** | ADF tests, correlation analysis, mutual information |
-| **Software Engineering** | Clean code, type hints, docstrings, unit tests, CI/CD |
-| **Visualization** | matplotlib, seaborn, Plotly (interactive) |
-| **Deployment** | Production-quality Streamlit app, persisted artifacts |
-| **Version Control** | Git workflow, GitHub Actions CI, structured commits |
-
----
-
-## 📄 License
-
-MIT License — see [LICENSE](LICENSE)
-
----
-
-## 🙏 Data Sources
-
-- [State Bank of Pakistan](https://www.sbp.org.pk) — monetary & FX data
-- [World Bank Open Data](https://data.worldbank.org) — GDP, population, trade
-- [IMF World Economic Outlook](https://www.imf.org/en/Publications/WEO) — macro indicators
-- [Pakistan Bureau of Statistics](https://www.pbs.gov.pk) — domestic statistics
+MIT © Muhammad Farooq
